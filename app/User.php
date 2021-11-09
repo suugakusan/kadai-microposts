@@ -117,10 +117,8 @@ class User extends Authenticatable
     {
         // すでにフォローしているかの確認
         $exists = $this->is_favoriting($MicropostId);
-        // 対象が自分自身かどうかの確認
-        $its_me_post = $this->id == $$MicropostId;
-
-        if ($exists || $its_me_post) {
+        
+        if ($exists) {
             // すでにフォローしていれば何もしない
             return false;
         } else {
@@ -133,11 +131,10 @@ class User extends Authenticatable
     public function unfavorite($MicropostId)
     {
         // すでにフォローしているかの確認
-        $exists = $this->is_following($MicropostId);
-        // 対象が自分自身かどうかの確認
-        $its_me_post = $this->id == $MicropostId;
+        $exists = $this->is_favoriting($MicropostId);
+        
 
-        if ($exists && !$its_me_post) {
+        if ($exists) {
             // すでにフォローしていればフォローを外す
             $this->favorites()->detach($MicropostId);
             return true;
